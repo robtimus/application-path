@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"com.github.robtimus.application.path","l":"ApplicationPath"},{"p":"com.github.robtimus.application.path","l":"UserDataOption"}];updateSearchResults();
