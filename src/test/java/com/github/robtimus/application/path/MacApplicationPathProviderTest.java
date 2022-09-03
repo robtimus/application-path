@@ -54,9 +54,9 @@ class MacApplicationPathProviderTest extends ApplicationPathProviderTestBase<Mac
     }
 
     @Test
-    @DisplayName("test non-mocked")
+    @DisplayName("with actual file system")
     @EnabledOnOs(OS.MAC)
-    void testNonMocked() {
+    void testWithActualFileSystem() {
         MacApplicationPathProvider provider = new MacApplicationPathProvider();
         assertEquals(Paths.get(System.getProperty("user.home")).resolve("Library/Application Support/app"), provider.userData("app"));
     }

@@ -349,11 +349,23 @@ class WindowsApplicationPathProviderTest extends ApplicationPathProviderTestBase
         }
     }
 
-    @Test
-    @DisplayName("test non-mocked")
+    @Nested
+    @DisplayName("with actual file system")
     @EnabledOnOs(OS.WINDOWS)
-    void testNonMocked() {
-        WindowsApplicationPathProvider provider = new WindowsApplicationPathProvider();
-        assertEquals(Paths.get(System.getProperty("user.home")).resolve("AppData/Roaming/App"), provider.userData("app"));
+    class WithActualFileSystem {
+
+        @Test
+        @DisplayName("non-local")
+        void testNonLocal() {
+            WindowsApplicationPathProvider provider = new WindowsApplicationPathProvider();
+            assertEquals(Paths.get(System.getProperty("user.home")).resolve("AppData/Roaming/app"), provider.userData("app"));
+        }
+
+        @Test
+        @DisplayName("local")
+        void testLocal() {
+            WindowsApplicationPathProvider provider = new WindowsApplicationPathProvider();
+            assertEquals(Paths.get(System.getProperty("user.home")).resolve("AppData/Local/app"), provider.userData("app", UserDataOption.LOCAL));
+        }
     }
 }

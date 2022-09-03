@@ -50,8 +50,8 @@ class GenericApplicationPathProviderTest extends ApplicationPathProviderTestBase
     }
 
     @Test
-    @DisplayName("test non-mocked")
-    void testNonMocked() {
+    @DisplayName("with actual file system")
+    void testWithActualFileSystem() {
         GenericApplicationPathProvider provider = new GenericApplicationPathProvider();
         assertEquals(Paths.get(System.getProperty("user.home")).resolve(".app"), provider.userData("app"));
     }
