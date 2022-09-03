@@ -17,20 +17,28 @@
 
 package com.github.robtimus.application.path;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.Function;
 
 final class MacApplicationPathProvider extends ApplicationPathProvider {
 
+    private final GenericApplicationPathProvider fallback;
+
     MacApplicationPathProvider() {
+        fallback = new GenericApplicationPathProvider();
     }
 
     MacApplicationPathProvider(Function<String, Path> pathFactory) {
         super(pathFactory);
+        fallback = new GenericApplicationPathProvider(pathFactory);
     }
 
     @Override
     public Path userData(String application, UserDataOption... options) {
-        return userHome().resolve("Library/Application Support").resolve(application); //$NON-NLS-1$
+        Path applicationSupport = userHome().resolve("Library/Application Support"); //$NON-NLS-1$
+        return Files.isDirectory(applicationSupport)
+                ? applicationSupport.resolve(application)
+                : fallback.userData(application, options);
     }
 }

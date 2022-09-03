@@ -24,6 +24,6 @@ package com.github.robtimus.application.path;
  */
 public enum UserDataOption {
 
-    /** Use a local, non-roaming user data path. */
+    /** Use a local, non-roaming user data path, if possible. */
     LOCAL,
 }

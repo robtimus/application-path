@@ -37,7 +37,7 @@ public final class ApplicationPath {
      * Retrieves the path where user data can be stored for an application. For instance:
      * <ul>
      * <li>{@code $HOME/.<application>} for Linux and Unix</li>
-     * <li>{@code $HOME/Library/Application Support/<application>} for MAC</li>
+     * <li>{@code $HOME/Library/Application Support/<application>} for macOS</li>
      * <li>{@code %HOME%\AppData\Roaming\<application>} for Windows</li>
      * </ul>
      * <p>
@@ -66,7 +66,7 @@ public final class ApplicationPath {
      * Retrieves the path where user data can be stored for an application created by a company. For instance:
      * <ul>
      * <li>{@code $HOME/.<company>/<application>} for Linux and Unix</li>
-     * <li>{@code $HOME/Library/Application Support/<company>/<application>} for MAC</li>
+     * <li>{@code $HOME/Library/Application Support/<company>/<application>} for macOS</li>
      * <li>{@code %HOME%\AppData\Roaming\<company>\<application>} for Windows</li>
      * </ul>
      * <p>

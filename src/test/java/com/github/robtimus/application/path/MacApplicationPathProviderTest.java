@@ -20,7 +20,10 @@ package com.github.robtimus.application.path;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.nio.file.Paths;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junitpioneer.jupiter.SetSystemProperty;
 
 @SuppressWarnings("nls")
@@ -30,17 +33,30 @@ class MacApplicationPathProviderTest extends ApplicationPathProviderTestBase<Mac
         super(MacApplicationPathProvider::new);
     }
 
-    @Test
+    @Nested
     @DisplayName("userData")
     @SetSystemProperty(key = "user.home", value = "/Users/test")
-    void testUserData() {
-        assertUserData("/Users/test/Library/Application Support/app", "app");
+    class UserData {
+
+        @Test
+        @DisplayName("Library/Application Support exists")
+        void testExistingLibraryApplicationSupport() {
+            createdirectories("/Users/test/Library/Application Support");
+
+            assertUserData("/Users/test/Library/Application Support/app", "app");
+        }
+
+        @Test
+        @DisplayName("Library/Application Support does not exists")
+        void testNonExistingLibraryApplicationSupport() {
+            assertUserData("/Users/test/.app", "app");
+        }
     }
 
     @Test
     @DisplayName("test non-mocked")
+    @EnabledOnOs(OS.MAC)
     void testNonMocked() {
-        // Note: should also work on Linux, Unix and Windows
         MacApplicationPathProvider provider = new MacApplicationPathProvider();
         assertEquals(Paths.get(System.getProperty("user.home")).resolve("Library/Application Support/app"), provider.userData("app"));
     }

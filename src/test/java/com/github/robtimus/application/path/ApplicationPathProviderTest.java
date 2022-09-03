@@ -39,7 +39,7 @@ class ApplicationPathProviderTest {
         }
 
         @Test
-        @DisplayName("MAC os.name")
+        @DisplayName("macOS os.name")
         @SetSystemProperty(key = "os.name", value = "macos")
         void testMacOsName() {
             assertInstanceOf(MacApplicationPathProvider.class, ApplicationPathProvider.current());

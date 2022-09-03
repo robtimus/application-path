@@ -2,12 +2,12 @@
 
 Provides utility classes for querying application specific paths.
 
-For user data or configuration, platform independent applications tend to use `<user.home>/.<application>` regardless of the platform. While this works fine on Linux, on Windows (and to a lesser extend MAC), this is messy. This library makes it easy to use a single API and still use platform specific paths. As a result, on Windows the user's own `AppData\Roaming` or `AppData\Local` folder will be used.
+For user data or configuration, platform independent applications tend to use `<user.home>/.<application>` regardless of the platform. While this works fine on Linux, on Windows (and to a lesser extend macOS), this is messy. This library makes it easy to use a single API and still use platform specific paths. As a result, on Windows the user's own `AppData\Roaming` or `AppData\Local` folder will be used.
 
 Currently, only the path to store user data or configuration is supported. This will use the following paths:
 
 * `$HOME/.<application>` or `$HOME/.<company>/<application>` for Linux and Unix
-* `$HOME/Library/Application Support/<application>` or `$HOME/Library/Application Support/<company>/<application>` for MAC
+* `$HOME/Library/Application Support/<application>` or `$HOME/Library/Application Support/<company>/<application>` for macOS
 * `%HOME%\AppData\Roaming\<application>`, `%HOME%\AppData\Roaming\<company>\<application>`, `%HOME%\AppData\Local\<application>` or `%HOME%\AppData\Local\<company>\<application>` for Windows
 
 To retrieve the path for an application's user data or configuration, simply call `ApplicationPath.userData`:

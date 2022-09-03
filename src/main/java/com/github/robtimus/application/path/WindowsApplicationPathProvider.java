@@ -23,60 +23,74 @@ import java.util.function.Function;
 
 final class WindowsApplicationPathProvider extends ApplicationPathProvider {
 
+    private final GenericApplicationPathProvider fallback;
+
     WindowsApplicationPathProvider() {
+        fallback = new GenericApplicationPathProvider();
     }
 
     WindowsApplicationPathProvider(Function<String, Path> pathFactory) {
         super(pathFactory);
+        fallback = new GenericApplicationPathProvider(pathFactory);
     }
 
     @Override
     public Path userData(String application, UserDataOption... options) {
-        Path appData = containsLocal(options)
+        AppData appData = containsLocal(options)
                 ? localAppData()
                 : roamingAppData();
-        return appData.resolve(application);
+
+        return appData.exists
+                ? appData.folder.resolve(application)
+                : fallback.userData(application, options);
     }
 
-    private Path localAppData() {
-        String localAppDataPath = System.getenv("LOCALAPPDATA"); //$NON-NLS-1$
-        if (localAppDataPath != null) {
-            Path localAppData = getPath(localAppDataPath);
-            if (Files.exists(localAppData)) {
-                return localAppData;
-            }
-        }
-
-        Path userHome = userHome();
-        Path localAppData = userHome.resolve("AppData/Local"); //$NON-NLS-1$
-        if (Files.exists(localAppData)) {
+    private AppData localAppData() {
+        AppData localAppData = localAppDataOnly();
+        if (localAppData.exists) {
             return localAppData;
         }
 
         // cannot find the local app data; fall back to roaming
-        return appData(userHome);
+        AppData roamingAppData = roamingAppData();
+        if (roamingAppData.exists) {
+            return roamingAppData;
+        }
+
+        return localAppData;
     }
 
-    private Path roamingAppData() {
-        String appDataPath = System.getenv("APPDATA"); //$NON-NLS-1$
-        if (appDataPath != null) {
-            Path appData = getPath(appDataPath);
-            if (Files.exists(appData)) {
-                return appData;
+    @SuppressWarnings("nls")
+    private AppData localAppDataOnly() {
+        return appData("LOCALAPPDATA", "AppData/Local", "Local Settings");
+    }
+
+    @SuppressWarnings("nls")
+    private AppData roamingAppData() {
+        return appData("APPDATA", "AppData/Roaming", "Application Data");
+    }
+
+    private AppData appData(String environmentVariable, String appDataPath, String legacyPath) {
+        String environmentValue = System.getenv(environmentVariable);
+        Path environmentPath = null;
+        if (environmentValue != null) {
+            environmentPath = getPath(environmentValue);
+            if (Files.isDirectory(environmentPath)) {
+                return AppData.of(environmentPath);
             }
         }
 
-        Path userHome = userHome();
-        return appData(userHome);
-    }
-
-    private Path appData(Path userHome) {
-        Path appData = userHome.resolve("AppData/Roaming"); //$NON-NLS-1$
-        if (Files.exists(appData)) {
-            return appData;
+        Path appData = userHome().resolve(appDataPath);
+        if (Files.isDirectory(appData)) {
+            return AppData.of(appData);
         }
 
-        return userHome.resolve("Application Data"); //$NON-NLS-1$
+        Path legacy = userHome().resolve(legacyPath);
+        if (Files.isDirectory(legacy)) {
+            return AppData.of(legacy);
+        }
+
+        return AppData.NON_EXISTENT;
     }
 
     private boolean containsLocal(UserDataOption... options) {
@@ -86,5 +100,22 @@ final class WindowsApplicationPathProvider extends ApplicationPathProvider {
             }
         }
         return false;
+    }
+
+    private static final class AppData {
+
+        private static final AppData NON_EXISTENT = new AppData(null, false);
+
+        private final Path folder;
+        private final boolean exists;
+
+        private AppData(Path folder, boolean exists) {
+            this.folder = folder;
+            this.exists = exists;
+        }
+
+        private static AppData of(Path folder) {
+            return new AppData(folder, true);
+        }
     }
 }

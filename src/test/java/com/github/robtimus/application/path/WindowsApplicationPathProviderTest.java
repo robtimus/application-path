@@ -55,7 +55,7 @@ class WindowsApplicationPathProviderTest extends ApplicationPathProviderTestBase
 
             @Nested
             @DisplayName("APPDATA is set but does not exist")
-            @SetEnvironmentVariable(key = "APPDATA", value = "/non-existent")
+            @SetEnvironmentVariable(key = "APPDATA", value = "/non-existent/Roaming")
             class NonExistingAppData {
 
                 @Test
@@ -66,11 +66,23 @@ class WindowsApplicationPathProviderTest extends ApplicationPathProviderTestBase
                     assertUserData("/Users/test/AppData/Roaming/app", "app", (UserDataOption) null);
                 }
 
-                @Test
-                @DisplayName("AppData/Roaming does not exists")
-                void testNonExistingRoamingAppData() {
+                @Nested
+                @DisplayName("AppData/Roaming does not exist")
+                class NonExistingRoamingAppData {
 
-                    assertUserData("/Users/test/Application Data/app", "app", (UserDataOption) null);
+                    @Test
+                    @DisplayName("legacy path exists")
+                    void testExistingLegacyPath() {
+                        createdirectories("/Users/test/Application Data");
+
+                        assertUserData("/Users/test/Application Data/app", "app", (UserDataOption) null);
+                    }
+
+                    @Test
+                    @DisplayName("legacy path does not exist")
+                    void testNonExistingLegacyPath() {
+                        assertUserData("/Users/test/.app", "app", (UserDataOption) null);
+                    }
                 }
             }
 
@@ -87,11 +99,23 @@ class WindowsApplicationPathProviderTest extends ApplicationPathProviderTestBase
                     assertUserData("/Users/test/AppData/Roaming/app", "app", (UserDataOption) null);
                 }
 
-                @Test
-                @DisplayName("AppData/Roaming does not exists")
-                void testNonExistingRoamingAppData() {
+                @Nested
+                @DisplayName("AppData/Roaming does not exist")
+                class NonExistingRoamingAppData {
 
-                    assertUserData("/Users/test/Application Data/app", "app", (UserDataOption) null);
+                    @Test
+                    @DisplayName("legacy path exists")
+                    void testExistingLegacyPath() {
+                        createdirectories("/Users/test/Application Data");
+
+                        assertUserData("/Users/test/Application Data/app", "app", (UserDataOption) null);
+                    }
+
+                    @Test
+                    @DisplayName("legacy path does not exist")
+                    void testNonExistingLegacyPath() {
+                        assertUserData("/Users/test/.app", "app", (UserDataOption) null);
+                    }
                 }
             }
         }
@@ -111,7 +135,7 @@ class WindowsApplicationPathProviderTest extends ApplicationPathProviderTestBase
 
             @Nested
             @DisplayName("LOCALAPPDATA is set but does not exist")
-            @SetEnvironmentVariable(key = "LOCALAPPDATA", value = "/non-existent")
+            @SetEnvironmentVariable(key = "LOCALAPPDATA", value = "/non-existent/Local")
             class NonExistingLocalAppData {
 
                 @Test
@@ -127,53 +151,90 @@ class WindowsApplicationPathProviderTest extends ApplicationPathProviderTestBase
                 class NonExistingLocalAppDataDir {
 
                     @Test
-                    @DisplayName("LOCALAPPDATA is set and exists")
-                    @SetEnvironmentVariable(key = "LOCALAPPDATA", value = "/Users/test/Custom-AppData/Local")
-                    void testExistingAppData() {
-                        createdirectories("/Users/test/Custom-AppData/Local");
+                    @DisplayName("legacy path exists")
+                    void testExistingLegacyPath() {
+                        createdirectories("/Users/test/Local Settings");
 
-                        assertUserData("/Users/test/Custom-AppData/Local/app", "app", UserDataOption.LOCAL);
+                        assertUserData("/Users/test/Local Settings/app", "app", UserDataOption.LOCAL);
                     }
 
                     @Nested
-                    @DisplayName("APPDATA is set but does not exist")
-                    @SetEnvironmentVariable(key = "APPDATA", value = "/non-existent")
-                    class NonExistingAppData {
+                    @DisplayName("legacy path does not exist")
+                    class NonExistingLegacyPath {
 
                         @Test
-                        @DisplayName("AppData/Roaming exists")
-                        void testExistingRoamingAppData() {
-                            createdirectories("/Users/test/AppData/Roaming");
+                        @DisplayName("APPDATA is set and exists")
+                        @SetEnvironmentVariable(key = "APPDATA", value = "/Users/test/Custom-AppData/Roaming")
+                        void testExistingAppData() {
+                            createdirectories("/Users/test/Custom-AppData/Roaming");
 
-                            assertUserData("/Users/test/AppData/Roaming/app", "app", UserDataOption.LOCAL);
+                            assertUserData("/Users/test/Custom-AppData/Roaming/app", "app", UserDataOption.LOCAL);
                         }
 
-                        @Test
-                        @DisplayName("AppData/Roaming does not exists")
-                        void testNonExistingRoamingAppData() {
+                        @Nested
+                        @DisplayName("APPDATA is set but does not exist")
+                        @SetEnvironmentVariable(key = "APPDATA", value = "/non-existent/Roaming")
+                        class NonExistingAppData {
 
-                            assertUserData("/Users/test/Application Data/app", "app", UserDataOption.LOCAL);
+                            @Test
+                            @DisplayName("AppData/Roaming exists")
+                            void testExistingRoamingAppData() {
+                                createdirectories("/Users/test/AppData/Roaming");
+
+                                assertUserData("/Users/test/AppData/Roaming/app", "app", UserDataOption.LOCAL);
+                            }
+
+                            @Nested
+                            @DisplayName("AppData/Roaming does not exist")
+                            class NonExistingRoamingAppData {
+
+                                @Test
+                                @DisplayName("legacy path exists")
+                                void testExistingLegacyPath() {
+                                    createdirectories("/Users/test/Application Data");
+
+                                    assertUserData("/Users/test/Application Data/app", "app", UserDataOption.LOCAL);
+                                }
+
+                                @Test
+                                @DisplayName("legacy path does not exist")
+                                void testNonExistingLegacyPath() {
+                                    assertUserData("/Users/test/.app", "app", UserDataOption.LOCAL);
+                                }
+                            }
                         }
-                    }
 
-                    @Nested
-                    @DisplayName("APPDATA is not set")
-                    @ClearEnvironmentVariable(key = "APPDATA")
-                    class NoAppData {
+                        @Nested
+                        @DisplayName("APPDATA is not set")
+                        @ClearEnvironmentVariable(key = "APPDATA")
+                        class NoAppData {
 
-                        @Test
-                        @DisplayName("AppData/Roaming exists")
-                        void testExistingRoamingAppData() {
-                            createdirectories("/Users/test/AppData/Roaming");
+                            @Test
+                            @DisplayName("AppData/Roaming exists")
+                            void testExistingRoamingAppData() {
+                                createdirectories("/Users/test/AppData/Roaming");
 
-                            assertUserData("/Users/test/AppData/Roaming/app", "app", UserDataOption.LOCAL);
-                        }
+                                assertUserData("/Users/test/AppData/Roaming/app", "app", UserDataOption.LOCAL);
+                            }
 
-                        @Test
-                        @DisplayName("AppData/Roaming does not exists")
-                        void testNonExistingRoamingAppData() {
+                            @Nested
+                            @DisplayName("AppData/Roaming does not exist")
+                            class NonExistingRoamingAppData {
 
-                            assertUserData("/Users/test/Application Data/app", "app", UserDataOption.LOCAL);
+                                @Test
+                                @DisplayName("legacy path exists")
+                                void testExistingLegacyPath() {
+                                    createdirectories("/Users/test/Application Data");
+
+                                    assertUserData("/Users/test/Application Data/app", "app", UserDataOption.LOCAL);
+                                }
+
+                                @Test
+                                @DisplayName("legacy path does not exist")
+                                void testNonExistingLegacyPath() {
+                                    assertUserData("/Users/test/.app", "app", UserDataOption.LOCAL);
+                                }
+                            }
                         }
                     }
                 }
@@ -197,53 +258,90 @@ class WindowsApplicationPathProviderTest extends ApplicationPathProviderTestBase
                 class NonExistingLocalAppDataDir {
 
                     @Test
-                    @DisplayName("LOCALAPPDATA is set and exists")
-                    @SetEnvironmentVariable(key = "LOCALAPPDATA", value = "/Users/test/Custom-AppData/Local")
-                    void testExistingAppData() {
-                        createdirectories("/Users/test/Custom-AppData/Local");
+                    @DisplayName("legacy path exists")
+                    void testExistingLegacyPath() {
+                        createdirectories("/Users/test/Local Settings");
 
-                        assertUserData("/Users/test/Custom-AppData/Local/app", "app", UserDataOption.LOCAL);
+                        assertUserData("/Users/test/Local Settings/app", "app", UserDataOption.LOCAL);
                     }
 
                     @Nested
-                    @DisplayName("APPDATA is set but does not exist")
-                    @SetEnvironmentVariable(key = "APPDATA", value = "/non-existent")
-                    class NonExistingAppData {
+                    @DisplayName("legacy path does not exist")
+                    class NonExistingLegacyPath {
 
                         @Test
-                        @DisplayName("AppData/Roaming exists")
-                        void testExistingRoamingAppData() {
-                            createdirectories("/Users/test/AppData/Roaming");
+                        @DisplayName("APPDATA is set and exists")
+                        @SetEnvironmentVariable(key = "APPDATA", value = "/Users/test/Custom-AppData/Roaming")
+                        void testExistingAppData() {
+                            createdirectories("/Users/test/Custom-AppData/Roaming");
 
-                            assertUserData("/Users/test/AppData/Roaming/app", "app", UserDataOption.LOCAL);
+                            assertUserData("/Users/test/Custom-AppData/Roaming/app", "app", UserDataOption.LOCAL);
                         }
 
-                        @Test
-                        @DisplayName("AppData/Roaming does not exists")
-                        void testNonExistingRoamingAppData() {
+                        @Nested
+                        @DisplayName("APPDATA is set but does not exist")
+                        @SetEnvironmentVariable(key = "APPDATA", value = "/non-existent/Roaming")
+                        class NonExistingAppData {
 
-                            assertUserData("/Users/test/Application Data/app", "app", UserDataOption.LOCAL);
+                            @Test
+                            @DisplayName("AppData/Roaming exists")
+                            void testExistingRoamingAppData() {
+                                createdirectories("/Users/test/AppData/Roaming");
+
+                                assertUserData("/Users/test/AppData/Roaming/app", "app", UserDataOption.LOCAL);
+                            }
+
+                            @Nested
+                            @DisplayName("AppData/Roaming does not exist")
+                            class NonExistingRoamingAppData {
+
+                                @Test
+                                @DisplayName("legacy path exists")
+                                void testExistingLegacyPath() {
+                                    createdirectories("/Users/test/Application Data");
+
+                                    assertUserData("/Users/test/Application Data/app", "app", UserDataOption.LOCAL);
+                                }
+
+                                @Test
+                                @DisplayName("legacy path does not exist")
+                                void testNonExistingLegacyPath() {
+                                    assertUserData("/Users/test/.app", "app", UserDataOption.LOCAL);
+                                }
+                            }
                         }
-                    }
 
-                    @Nested
-                    @DisplayName("APPDATA is not set")
-                    @ClearEnvironmentVariable(key = "APPDATA")
-                    class NoAppData {
+                        @Nested
+                        @DisplayName("APPDATA is not set")
+                        @ClearEnvironmentVariable(key = "APPDATA")
+                        class NoAppData {
 
-                        @Test
-                        @DisplayName("AppData/Roaming exists")
-                        void testExistingRoamingAppData() {
-                            createdirectories("/Users/test/AppData/Roaming");
+                            @Test
+                            @DisplayName("AppData/Roaming exists")
+                            void testExistingRoamingAppData() {
+                                createdirectories("/Users/test/AppData/Roaming");
 
-                            assertUserData("/Users/test/AppData/Roaming/app", "app", UserDataOption.LOCAL);
-                        }
+                                assertUserData("/Users/test/AppData/Roaming/app", "app", UserDataOption.LOCAL);
+                            }
 
-                        @Test
-                        @DisplayName("AppData/Roaming does not exists")
-                        void testNonExistingRoamingAppData() {
+                            @Nested
+                            @DisplayName("AppData/Roaming does not exist")
+                            class NonExistingRoamingAppData {
 
-                            assertUserData("/Users/test/Application Data/app", "app", UserDataOption.LOCAL);
+                                @Test
+                                @DisplayName("legacy path exists")
+                                void testExistingLegacyPath() {
+                                    createdirectories("/Users/test/Application Data");
+
+                                    assertUserData("/Users/test/Application Data/app", "app", UserDataOption.LOCAL);
+                                }
+
+                                @Test
+                                @DisplayName("legacy path does not exist")
+                                void testNonExistingLegacyPath() {
+                                    assertUserData("/Users/test/.app", "app", UserDataOption.LOCAL);
+                                }
+                            }
                         }
                     }
                 }
