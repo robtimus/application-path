@@ -36,61 +36,51 @@ final class WindowsApplicationPathProvider extends ApplicationPathProvider {
 
     @Override
     public Path userData(String application, UserDataOption... options) {
-        AppData appData = containsLocal(options)
-                ? localAppData()
-                : roamingAppData();
+        Path appData = null;
+        if (containsLocal(options)) {
+            appData = findLocalAppData();
+        }
+        if (appData == null) {
+            // either LOCAL not given as option, or local app data could not be found
+            appData = findRoamingAppData();
+        }
 
-        return appData.exists
-                ? appData.folder.resolve(application)
+        return appData != null
+                ? appData.resolve(application)
                 : fallback.userData(application, options);
     }
 
-    private AppData localAppData() {
-        AppData localAppData = localAppDataOnly();
-        if (localAppData.exists) {
-            return localAppData;
-        }
-
-        // cannot find the local app data; fall back to roaming
-        AppData roamingAppData = roamingAppData();
-        if (roamingAppData.exists) {
-            return roamingAppData;
-        }
-
-        return localAppData;
+    @SuppressWarnings("nls")
+    private Path findLocalAppData() {
+        return findAppData("LOCALAPPDATA", "AppData/Local", "Local Settings");
     }
 
     @SuppressWarnings("nls")
-    private AppData localAppDataOnly() {
-        return appData("LOCALAPPDATA", "AppData/Local", "Local Settings");
+    private Path findRoamingAppData() {
+        return findAppData("APPDATA", "AppData/Roaming", "Application Data");
     }
 
-    @SuppressWarnings("nls")
-    private AppData roamingAppData() {
-        return appData("APPDATA", "AppData/Roaming", "Application Data");
-    }
-
-    private AppData appData(String environmentVariable, String appDataPath, String legacyPath) {
+    private Path findAppData(String environmentVariable, String appDataPath, String legacyPath) {
         String environmentValue = System.getenv(environmentVariable);
         Path environmentPath = null;
         if (environmentValue != null) {
             environmentPath = getPath(environmentValue);
             if (Files.isDirectory(environmentPath)) {
-                return AppData.of(environmentPath);
+                return environmentPath;
             }
         }
 
         Path appData = userHome().resolve(appDataPath);
         if (Files.isDirectory(appData)) {
-            return AppData.of(appData);
+            return appData;
         }
 
         Path legacy = userHome().resolve(legacyPath);
         if (Files.isDirectory(legacy)) {
-            return AppData.of(legacy);
+            return legacy;
         }
 
-        return AppData.NON_EXISTENT;
+        return null;
     }
 
     private boolean containsLocal(UserDataOption... options) {
@@ -100,22 +90,5 @@ final class WindowsApplicationPathProvider extends ApplicationPathProvider {
             }
         }
         return false;
-    }
-
-    private static final class AppData {
-
-        private static final AppData NON_EXISTENT = new AppData(null, false);
-
-        private final Path folder;
-        private final boolean exists;
-
-        private AppData(Path folder, boolean exists) {
-            this.folder = folder;
-            this.exists = exists;
-        }
-
-        private static AppData of(Path folder) {
-            return new AppData(folder, true);
-        }
     }
 }
