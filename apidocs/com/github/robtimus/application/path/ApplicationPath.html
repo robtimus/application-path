@@ -135,10 +135,10 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>static <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/github/robtimus/application/path/ApplicationPath.html#userData-java.lang.String-java.lang.String-com.github.robtimus.application.path.UserDataOption...-">userData</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;company,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/github/robtimus/application/path/ApplicationPath.html#userData-java.lang.String-java.lang.String-com.github.robtimus.application.path.UserDataOption...-">userData</a></span>(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;organization,
         <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;application,
         <a href="../../../../../com/github/robtimus/application/path/UserDataOption.html" title="enum in com.github.robtimus.application.path">UserDataOption</a>...&nbsp;options)</code>
-<div class="block">Retrieves the path where user data can be stored for an application created by a company.</div>
+<div class="block">Retrieves the path where user data can be stored for an application created by a organization.</div>
 </td>
 </tr>
 <tr id="i1" class="rowColor">
@@ -181,13 +181,13 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <div class="block">Retrieves the path where user data can be stored for an application. For instance:
  <ul>
  <li><code>$HOME/.&lt;application&gt;</code> for Linux and Unix</li>
- <li><code>$HOME/Library/Application Support/&lt;application&gt;</code> for MAC</li>
+ <li><code>$HOME/Library/Application Support/&lt;application&gt;</code> for macOS</li>
  <li><code>%HOME%\AppData\Roaming\&lt;application&gt;</code> for Windows</li>
  </ul>
  <p>
  If the given options contains <a href="../../../../../com/github/robtimus/application/path/UserDataOption.html#LOCAL"><code>UserDataOption.LOCAL</code></a>, this method will attempt to return the local user data folder
- (<code>%HOME%\AppData\Local\&lt;application&gt;</code>) on Windows instead of the roaming user data folder. For other operating systems this option will
- be ignored.
+ (<code>%HOME%\AppData\Local\&lt;application&gt;</code>) on Windows instead of the roaming user data folder. For other platforms this option will be
+ ignored.
  <p>
  This method will not ensure that the path exists. It is the responsibility of the caller to create the path as necessary.</div>
 <dl>
@@ -211,36 +211,36 @@ extends <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Object.html
 <ul class="blockListLast">
 <li class="blockList">
 <h4>userData</h4>
-<pre>public static&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&nbsp;userData(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;company,
+<pre>public static&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html?is-external=true" title="class or interface in java.nio.file">Path</a>&nbsp;userData(<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;organization,
                             <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html?is-external=true" title="class or interface in java.lang">String</a>&nbsp;application,
                             <a href="../../../../../com/github/robtimus/application/path/UserDataOption.html" title="enum in com.github.robtimus.application.path">UserDataOption</a>...&nbsp;options)</pre>
-<div class="block">Retrieves the path where user data can be stored for an application created by a company. For instance:
+<div class="block">Retrieves the path where user data can be stored for an application created by a organization. For instance:
  <ul>
- <li><code>$HOME/.&lt;company&gt;/&lt;application&gt;</code> for Linux and Unix</li>
- <li><code>$HOME/Library/Application Support/&lt;company&gt;/&lt;application&gt;</code> for MAC</li>
- <li><code>%HOME%\AppData\Roaming\&lt;company&gt;\&lt;application&gt;</code> for Windows</li>
+ <li><code>$HOME/.&lt;organization&gt;/&lt;application&gt;</code> for Linux and Unix</li>
+ <li><code>$HOME/Library/Application Support/&lt;organization&gt;/&lt;application&gt;</code> for macOS</li>
+ <li><code>%HOME%\AppData\Roaming\&lt;organization&gt;\&lt;application&gt;</code> for Windows</li>
  </ul>
  <p>
  If the given options contains <a href="../../../../../com/github/robtimus/application/path/UserDataOption.html#LOCAL"><code>UserDataOption.LOCAL</code></a>, this method will attempt to return the local user data folder
- (<code>%HOME%\AppData\Local\&lt;company&gt;\&lt;application&gt;</code>) on Windows instead of the roaming user data folder. For other operating systems this
- option will be ignored.
+ (<code>%HOME%\AppData\Local\&lt;organization&gt;\&lt;application&gt;</code>) on Windows instead of the roaming user data folder. For other platforms this option
+ will be ignored.
  <p>
  This method will not ensure that the path or its parent folder exists. It is the responsibility of the caller to create the path as necessary.</div>
 <dl>
 <dt><span class="paramLabel">Parameters:</span></dt>
-<dd><code>company</code> - The company that created the application.</dd>
+<dd><code>organization</code> - The organization that created the application.</dd>
 <dd><code>application</code> - The application for which to retrieve the user data path.</dd>
 <dd><code>options</code> - The options to use.</dd>
 <dt><span class="returnLabel">Returns:</span></dt>
-<dd>The path where user data can be stored for the given application created by the given company.</dd>
+<dd>The path where user data can be stored for the given application created by the given organization.</dd>
 <dt><span class="throwsLabel">Throws:</span></dt>
-<dd><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/NullPointerException.html?is-external=true" title="class or interface in java.lang">NullPointerException</a></code> - If the given company or application is <code>null</code>.</dd>
-<dd><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html?is-external=true" title="class or interface in java.lang">IllegalArgumentException</a></code> - If the given company or application is equal to <code>.</code>, <code>..</code> or the empty string,
-                                      or if the given company or application starts or ends with
+<dd><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/NullPointerException.html?is-external=true" title="class or interface in java.lang">NullPointerException</a></code> - If the given organization or application is <code>null</code>.</dd>
+<dd><code><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.html?is-external=true" title="class or interface in java.lang">IllegalArgumentException</a></code> - If the given organization or application is equal to <code>.</code>, <code>..</code> or the empty string,
+                                      or if the given organization or application starts or ends with
                                       <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Character.html?is-external=true#isWhitespace-int-" title="class or interface in java.lang">whitespace</a>,
-                                      or if the given company or application contains a (back)slash,
-                                      or if the given company or application contains any <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Character.html?is-external=true#isISOControl-int-" title="class or interface in java.lang">ISO control</a>
-                                      characters.</dd>
+                                      or if the given organization or application contains a (back)slash,
+                                      or if the given organization or application contains any
+                                      <a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Character.html?is-external=true#isISOControl-int-" title="class or interface in java.lang">ISO control</a> characters.</dd>
 </dl>
 </li>
 </ul>
