@@ -36,7 +36,7 @@ abstract class ApplicationPathProvider {
         this.userHome = pathFactory.apply(System.getProperty("user.home")); //$NON-NLS-1$
     }
 
-    abstract Path userData(String application, UserDataOption... options);
+    abstract Path userData(String folderName, UserDataOption... options);
 
     final Path getPath(String path) {
         return pathFactory.apply(path);

@@ -35,10 +35,10 @@ final class MacApplicationPathProvider extends ApplicationPathProvider {
     }
 
     @Override
-    public Path userData(String application, UserDataOption... options) {
+    public Path userData(String folderName, UserDataOption... options) {
         Path applicationSupport = userHome().resolve("Library/Application Support"); //$NON-NLS-1$
         return Files.isDirectory(applicationSupport)
-                ? applicationSupport.resolve(application)
-                : fallback.userData(application, options);
+                ? applicationSupport.resolve(folderName)
+                : fallback.userData(folderName, options);
     }
 }

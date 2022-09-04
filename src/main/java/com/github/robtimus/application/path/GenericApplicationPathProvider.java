@@ -32,9 +32,9 @@ final class GenericApplicationPathProvider extends ApplicationPathProvider {
     }
 
     @Override
-    public Path userData(String application, UserDataOption... options) {
+    public Path userData(String folderName, UserDataOption... options) {
         // Only add a leading dot if necessary
-        String pathName = application.startsWith(PREFIX) ? application : PREFIX + application;
-        return userHome().resolve(pathName);
+        String folderNameWithDot = folderName.startsWith(PREFIX) ? folderName : PREFIX + folderName;
+        return userHome().resolve(folderNameWithDot);
     }
 }

@@ -35,7 +35,7 @@ final class WindowsApplicationPathProvider extends ApplicationPathProvider {
     }
 
     @Override
-    public Path userData(String application, UserDataOption... options) {
+    public Path userData(String folderName, UserDataOption... options) {
         Path appData = null;
         if (containsLocal(options)) {
             appData = findLocalAppData();
@@ -46,8 +46,8 @@ final class WindowsApplicationPathProvider extends ApplicationPathProvider {
         }
 
         return appData != null
-                ? appData.resolve(application)
-                : fallback.userData(application, options);
+                ? appData.resolve(folderName)
+                : fallback.userData(folderName, options);
     }
 
     @SuppressWarnings("nls")
