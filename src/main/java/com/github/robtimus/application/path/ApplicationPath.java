@@ -107,16 +107,16 @@ public final class ApplicationPath {
         Objects.requireNonNull(folderName);
 
         if (".".equals(folderName) || "..".equals(folderName)) { //$NON-NLS-1$ //$NON-NLS-2$
-            throw new IllegalArgumentException(Messages.ApplicationPath.reservedFolderName.get(folderType, folderName));
+            throw new IllegalArgumentException(Messages.ApplicationPath.reservedFolderName(folderType, folderName));
         }
         if (folderName.isEmpty()) {
-            throw new IllegalArgumentException(Messages.ApplicationPath.emptyFolderName.get(folderType));
+            throw new IllegalArgumentException(Messages.ApplicationPath.emptyFolderName(folderType));
         }
         if (Character.isWhitespace(folderName.charAt(0)) || Character.isWhitespace(folderName.charAt(folderName.length() - 1))) {
-            throw new IllegalArgumentException(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank.get(folderType, folderName));
+            throw new IllegalArgumentException(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank(folderType, folderName));
         }
         if (folderName.codePoints().anyMatch(ApplicationPath::isForbidden)) {
-            throw new IllegalArgumentException(Messages.ApplicationPath.folderNameContainsForbiddenCharacters.get(folderType, folderName));
+            throw new IllegalArgumentException(Messages.ApplicationPath.folderNameContainsForbiddenCharacters(folderType, folderName));
         }
     }
 

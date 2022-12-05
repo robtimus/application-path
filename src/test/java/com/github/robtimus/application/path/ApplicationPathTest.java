@@ -58,40 +58,40 @@ class ApplicationPathTest {
             @DisplayName("preserved value")
             void testPreservedValue(String application) {
                 IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData(application));
-                assertEquals(Messages.ApplicationPath.reservedFolderName.get("application", application), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.reservedFolderName("application", application), exception.getMessage());
 
                 exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData(application, UserDataOption.LOCAL));
-                assertEquals(Messages.ApplicationPath.reservedFolderName.get("application", application), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.reservedFolderName("application", application), exception.getMessage());
             }
 
             @Test
             @DisplayName("empty value")
             void testEmptyValue() {
                 IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData(""));
-                assertEquals(Messages.ApplicationPath.emptyFolderName.get("application"), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.emptyFolderName("application"), exception.getMessage());
 
                 exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData("", UserDataOption.LOCAL));
-                assertEquals(Messages.ApplicationPath.emptyFolderName.get("application"), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.emptyFolderName("application"), exception.getMessage());
             }
 
             @Test
             @DisplayName("starts with whitespace")
             void testStartsWithWhiteSpace() {
                 IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData(" app"));
-                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank.get("application", " app"), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank("application", " app"), exception.getMessage());
 
                 exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData(" app", UserDataOption.LOCAL));
-                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank.get("application", " app"), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank("application", " app"), exception.getMessage());
             }
 
             @Test
             @DisplayName("ends with whitespace")
             void testEndsWithWhiteSpace() {
                 IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData("app "));
-                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank.get("application", "app "), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank("application", "app "), exception.getMessage());
 
                 exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData("app ", UserDataOption.LOCAL));
-                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank.get("application", "app "), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank("application", "app "), exception.getMessage());
             }
 
             @ParameterizedTest(name = "{0}")
@@ -99,10 +99,10 @@ class ApplicationPathTest {
             @DisplayName("forbidden character")
             void testForbiddenCharacter(String application) {
                 IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData(application));
-                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters.get("application", application), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters("application", application), exception.getMessage());
 
                 exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData(application, UserDataOption.LOCAL));
-                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters.get("application", application), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters("application", application), exception.getMessage());
             }
 
             @Test
@@ -111,10 +111,10 @@ class ApplicationPathTest {
                 String application = "app" + File.separator + "path";
 
                 IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData(application));
-                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters.get("application", application), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters("application", application), exception.getMessage());
 
                 exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData(application, UserDataOption.LOCAL));
-                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters.get("application", application), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters("application", application), exception.getMessage());
             }
         }
     }
@@ -148,40 +148,40 @@ class ApplicationPathTest {
             void testPreservedValue(String organization) {
                 IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                         () -> ApplicationPath.userData(organization, "app"));
-                assertEquals(Messages.ApplicationPath.reservedFolderName.get("organization", organization), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.reservedFolderName("organization", organization), exception.getMessage());
 
                 exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData(organization, "app", UserDataOption.LOCAL));
-                assertEquals(Messages.ApplicationPath.reservedFolderName.get("organization", organization), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.reservedFolderName("organization", organization), exception.getMessage());
             }
 
             @Test
             @DisplayName("empty value")
             void testEmptyValue() {
                 IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData("", "app"));
-                assertEquals(Messages.ApplicationPath.emptyFolderName.get("organization"), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.emptyFolderName("organization"), exception.getMessage());
 
                 exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData("", "app", UserDataOption.LOCAL));
-                assertEquals(Messages.ApplicationPath.emptyFolderName.get("organization"), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.emptyFolderName("organization"), exception.getMessage());
             }
 
             @Test
             @DisplayName("starts with whitespace")
             void testStartsWithWhiteSpace() {
                 IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData(" org", "app"));
-                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank.get("organization", " org"), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank("organization", " org"), exception.getMessage());
 
                 exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData(" org", "app", UserDataOption.LOCAL));
-                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank.get("organization", " org"), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank("organization", " org"), exception.getMessage());
             }
 
             @Test
             @DisplayName("ends with whitespace")
             void testEndsWithWhiteSpace() {
                 IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData("org ", "app"));
-                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank.get("organization", "org "), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank("organization", "org "), exception.getMessage());
 
                 exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData("org ", "app", UserDataOption.LOCAL));
-                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank.get("organization", "org "), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank("organization", "org "), exception.getMessage());
             }
 
             @ParameterizedTest(name = "{0}")
@@ -190,11 +190,11 @@ class ApplicationPathTest {
             void testForbiddenCharacter(String organization) {
                 IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                         () -> ApplicationPath.userData(organization, "app"));
-                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters.get("organization", organization),
+                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters("organization", organization),
                         exception.getMessage());
 
                 exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData(organization, "app", UserDataOption.LOCAL));
-                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters.get("organization", organization),
+                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters("organization", organization),
                         exception.getMessage());
             }
 
@@ -205,11 +205,11 @@ class ApplicationPathTest {
 
                 IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                         () -> ApplicationPath.userData(organization, "app"));
-                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters.get("organization", organization),
+                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters("organization", organization),
                         exception.getMessage());
 
                 exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData(organization, "app", UserDataOption.LOCAL));
-                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters.get("organization", organization),
+                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters("organization", organization),
                         exception.getMessage());
             }
         }
@@ -231,40 +231,40 @@ class ApplicationPathTest {
             void testPreservedValue(String application) {
                 IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                         () -> ApplicationPath.userData("org", application));
-                assertEquals(Messages.ApplicationPath.reservedFolderName.get("application", application), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.reservedFolderName("application", application), exception.getMessage());
 
                 exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData("org", application, UserDataOption.LOCAL));
-                assertEquals(Messages.ApplicationPath.reservedFolderName.get("application", application), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.reservedFolderName("application", application), exception.getMessage());
             }
 
             @Test
             @DisplayName("empty value")
             void testEmptyValue() {
                 IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData("org", ""));
-                assertEquals(Messages.ApplicationPath.emptyFolderName.get("application"), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.emptyFolderName("application"), exception.getMessage());
 
                 exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData("org", "", UserDataOption.LOCAL));
-                assertEquals(Messages.ApplicationPath.emptyFolderName.get("application"), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.emptyFolderName("application"), exception.getMessage());
             }
 
             @Test
             @DisplayName("starts with whitespace")
             void testStartsWithWhiteSpace() {
                 IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData("org", " app"));
-                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank.get("application", " app"), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank("application", " app"), exception.getMessage());
 
                 exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData("org", " app", UserDataOption.LOCAL));
-                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank.get("application", " app"), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank("application", " app"), exception.getMessage());
             }
 
             @Test
             @DisplayName("ends with whitespace")
             void testEndsWithWhiteSpace() {
                 IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData("org", "app "));
-                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank.get("application", "app "), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank("application", "app "), exception.getMessage());
 
                 exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData("org", "app ", UserDataOption.LOCAL));
-                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank.get("application", "app "), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameStartsOrEndsWithBlank("application", "app "), exception.getMessage());
             }
 
             @ParameterizedTest(name = "{0}")
@@ -273,10 +273,10 @@ class ApplicationPathTest {
             void testForbiddenCharacter(String application) {
                 IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                         () -> ApplicationPath.userData("org", application));
-                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters.get("application", application), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters("application", application), exception.getMessage());
 
                 exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData("org", application, UserDataOption.LOCAL));
-                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters.get("application", application), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters("application", application), exception.getMessage());
             }
 
             @Test
@@ -286,10 +286,10 @@ class ApplicationPathTest {
 
                 IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
                         () -> ApplicationPath.userData("org", application));
-                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters.get("application", application), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters("application", application), exception.getMessage());
 
                 exception = assertThrows(IllegalArgumentException.class, () -> ApplicationPath.userData("org", application, UserDataOption.LOCAL));
-                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters.get("application", application), exception.getMessage());
+                assertEquals(Messages.ApplicationPath.folderNameContainsForbiddenCharacters("application", application), exception.getMessage());
             }
         }
     }
