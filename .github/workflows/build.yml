@@ -27,17 +27,17 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        java: [8, 11, 17, 21]
         distribution: [temurin]
+        java: [8, 11, 17, 21]
         # no temurin 8 build is available for macos-latest; use corretto instead
         exclude:
           - os: macos-latest
-            java: 8
             distribution: temurin
+            java: 8
         include:
           - os: macos-latest
-            java: 8
             distribution: corretto
+            java: 8
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
